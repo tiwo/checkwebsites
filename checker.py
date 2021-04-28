@@ -10,6 +10,10 @@ Usage::
     'green'
     >>> text
     '✓ 200'
+
+    >>> WebserverChecker("http://example.invalid/").check()
+    (False, 'darkRed', '🛑 Connection Error')
+
 """
 
 import requests
@@ -29,7 +33,10 @@ class WebserverChecker:
         - `text` is a short description of the result, as a string.
 
         """
-        response = requests.head(self.url)
+        try:
+            response = requests.head(self.url)
+        except requests.exceptions.RequestException:
+            return False, "darkRed", "🛑 Connection Error"
         return self._status_is_okay(response.status_code)
 
 
