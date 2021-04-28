@@ -18,8 +18,23 @@ class WebserverChecker:
 
     def __init__(self, url):
         self.url = url
-    
+
+
+    def check(self):
+        """Run the test and return a tuple of good, color, text
+
+        where
+        - `good` is True or false depending on wether the test succeeded
+        - `color` is a proposed color name depending on the result
+        - `text` is a short description of the result, as a string.
+
+        """
+        response = requests.head(self.url)
+        return self._status_is_okay(response.status_code)
+
+
     def _status_is_okay(self, http_status):
+
 
         if not (100 <= http_status < 599):
             return False, "darkRed", f"Protocol violation ({http_status!r})"
@@ -34,6 +49,3 @@ class WebserverChecker:
         return false, "red", f"🛑 {http_status}"
 
 
-    def check(self):
-        response = requests.head(self.url)
-        return self._status_is_okay(response.status_code)
