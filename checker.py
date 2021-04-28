@@ -29,14 +29,11 @@ class WebserverChecker:
 
         hundreds = http_status // 100
         if hundreds == 2:
-            return False, "yellow", f"? {http_status}"
+            return False, "yellow", f"⚠️ {http_status}"
 
-        return false, "red", f"? {http_status}"
+        return false, "red", f"🛑 {http_status}"
 
 
     def check(self):
         response = requests.head(self.url)
         return self._status_is_okay(response.status_code)
-
-
-        
